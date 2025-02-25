@@ -2,65 +2,100 @@
 //Console.WriteLine("Hello, World!");
 
 /*
- - Develop a console application that calculates the average grade of a student.
+ - Develop a console application that calculates the average grade of a Multiple students.
  - Use arrays to store grades and loops to iterate through them.
  - Implement methods to calculate the average and determine the grade (A, B, C, etc.).
 */
 
-//Prompting the user for marks input
-Console.WriteLine("Enter the number of student marks to be entered: ");
-string number=Console.ReadLine()!;
-
-//Datatype conversion from string to int
-int n=int.Parse(number);
-
-//declaration and initialization of array
-int[] marks=new int[n];
-
-//for loop
-for(int i=0;i<n;i++)
+using System;
+public abstract class Person
 {
-    Console.WriteLine($"Enter Mark {i+1}: ");
-    marks[i]=int.Parse(Console.ReadLine()!);
+    public string Name {get;set;}
+    public int Age {get;set;}
+    public abstract float Calculate_Average(int[] marks);
+    public abstract string Compute_Grades(float average);
 }
 
-//looping through array elements to compute the total marks of a student
-int sum=0;
-for(int i=0;i<n;i++)
-{
-    sum+=marks[i];
+public class Student : Person
+{   
+    public override float Calculate_Average(int[] marks)
+    {
+        int sum=0;
+        for(int i=0;i<marks.Length;i++)
+        {
+            sum+=marks[i];
+        }
+        return (float)sum/marks.Length;
+    }
+    public override string Compute_Grades(float average)
+    {
+        if(average>=90 && average<=100)
+        {
+            return "The grade is 'O'";
+        }
+        else if(average>=80 && average<90)
+        {
+            return "The grade is 'A'";
+        }
+        else if(average>=70 && average<80)
+        {
+            return "The grade is 'B'";
+        }
+        else if(average>=60 && average<70)
+        {
+            return "The grade is 'C'";
+        }
+        else if(average>=50 && average<60)
+        {
+            return "The grade is 'D'";
+        }
+        else if(average>=40 && average<50)
+        {
+            return "The grade is 'E'";
+        }
+        else
+        {
+            return "Fail";
+        }
+    }
+    public void Student_Details()
+    {
+        Console.WriteLine("Enter the number of students whose grades you want to calculate: ");
+        string student_number=Console.ReadLine()!;
+        int students=int.Parse(student_number);
+        for(int i=0;i<students;i++)
+        {
+            Console.WriteLine($"Enter the name of student {i+1}: ");
+            Name=Console.ReadLine()!;
+
+            Console.WriteLine($"Enter the age of student {i+1}: ");
+            Age=int.Parse(Console.ReadLine()!);
+
+            Console.WriteLine($"How many marks do you want to enter for Student {i+1}? ");
+            string number=Console.ReadLine()!;
+            int x=int.Parse(number);
+
+            int[] marks=new int[x];
+
+            for(int j=0;j<x;j++)
+            {
+                Console.WriteLine($"\nFor Student {i+1}, enter the marks as follows\n");
+                Console.WriteLine($"Enter Mark {j+1}: ");
+                marks[j]=int.Parse(Console.ReadLine()!);
+            }
+            float average=Calculate_Average(marks);
+            string grade=Compute_Grades(average);
+
+            Console.WriteLine($"Name of the Student: {Name}\nAge: {Age}\nAverage Mark: {average:F2}\nGrade: {grade}\n");
+        }
+    }
 }
 
-//Calculating the average marks of a student
-float average=(float)sum/n;
-Console.WriteLine($"The Average Mark is {average:F3}");
-
-//Assigning grades to the student according to the average mark scored by the student
-if(average>=90 && average<=100)
+public class Program
 {
-    Console.WriteLine("The grade is 'O'");
-}
-else if(average>=80 && average<90)
-{
-    Console.WriteLine("The grade is 'A'");
-}
-else if(average>=70 && average<80)
-{
-    Console.WriteLine("The grade is 'B'");
-}
-else if(average>=60 && average<70)
-{
-    Console.WriteLine("The grade is 'C'");
-}
-else if(average>=50 && average<60)
-{
-    Console.WriteLine("The grade is 'D'");
-}
-else if(average>=40 && average<50)
-{
-    Console.WriteLine("The grade is 'E'");
-}
-else
-{
-    Console.WriteLine("Fail");
+    public static void Main()
+    {
+        Student s=new Student();
+        s.Student_Details();
+    }
 }
