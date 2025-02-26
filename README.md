@@ -14,4 +14,5 @@
 - The desired output is displayed in the screen
 - Inputs Name, Age, Marks from the user 
 - Displays Name, Age, Average and Grade of the student
+- Includes Error Handling Features such as try, throw, catch and finally blocks
 - The end

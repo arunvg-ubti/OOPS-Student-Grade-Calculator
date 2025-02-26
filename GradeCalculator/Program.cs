@@ -1,16 +1,17 @@
 ﻿using System;
 
-public abstract class Person
+//Person and Student class shows Inheritance
+public abstract class Person //base class
 {
-    public string Name { get; set; }
-    public int Age { get; set; }
-    public abstract float Calculate_Average(int[] marks);
-    public abstract string Compute_Grades(float average);
+    public string Name { get; set; } //encapsulation
+    public int Age { get; set; } //encapsulation
+    public abstract float Calculate_Average(int[] marks); //abstraction
+    public abstract string Compute_Grades(float average); //abstraction
 }
 
-public class Student : Person
+public class Student : Person //derived class
 {
-    public override float Calculate_Average(int[] marks)
+    public override float Calculate_Average(int[] marks) //method overriding - Polymorphism
     {
         int sum = 0;
         for (int i = 0; i < marks.Length; i++)
@@ -20,7 +21,7 @@ public class Student : Person
         return (float)sum / marks.Length;
     }
 
-    public override string Compute_Grades(float average)
+    public override string Compute_Grades(float average) //method overriding - Polymorphism
     {
         if (average >= 90 && average <= 100)
         {
@@ -52,18 +53,18 @@ public class Student : Person
         }
     }
 
-    public void Student_Details()
+    public void Student_Details() //get and post student details
     {
         try
         {
             Console.WriteLine("Enter the number of students whose grades you want to calculate: ");
             string student_number = Console.ReadLine()!;
-            int students = int.Parse(student_number);
+            int students = int.Parse(student_number); //Converting datatype
             if (students > 0)
             {
                 for (int i = 0; i < students; i++)
                 {
-                    try
+                    try //try block
                     {
                         Console.WriteLine($"Enter the name of student {i + 1}: ");
                         Name = Console.ReadLine()!;
@@ -73,7 +74,7 @@ public class Student : Person
 
                         if (Age < 0)
                         {
-                            throw new Exception("Age can't be negative");
+                            throw new Exception("Age can't be negative"); //throw statement
                         }
 
                         Console.WriteLine($"How many marks do you want to enter for Student {i + 1}? ");
@@ -82,14 +83,14 @@ public class Student : Person
 
                         if (x <= 0)
                         {
-                            throw new Exception("The number of marks to be entered should be greater than zero...");
+                            throw new Exception("The number of marks to be entered should be greater than zero..."); //throw statement
                         }
 
                         int[] marks = new int[x];
 
                         for (int j = 0; j < x; j++)
                         {
-                            try
+                            try //try block
                             {
                                 Console.WriteLine($"\nFor Student {i + 1}, enter the marks as follows\n");
                                 Console.WriteLine($"Enter Mark {j + 1}: ");
@@ -97,12 +98,12 @@ public class Student : Person
 
                                 if (marks[j] < 0)
                                 {
-                                    throw new Exception("Marks can't be negative");
+                                    throw new Exception("Marks can't be negative"); //throw statement
                                 }
                             }
-                            catch (Exception e)
+                            catch (Exception e) //catch block
                             {
-                                Console.WriteLine(e.Message); // Added catch block inside the loop
+                                Console.WriteLine(e.Message); 
                             }
                         }
 
@@ -111,26 +112,26 @@ public class Student : Person
 
                         Console.WriteLine($"Name of the Student: {Name}\nAge: {Age}\nAverage Mark: {average:F2}\nGrade: {grade}\n");
                     }
-                    catch (Exception e)
+                    catch (Exception e) //catch block
                     {
-                        Console.WriteLine(e.Message); // Added catch block for each student
+                        Console.WriteLine(e.Message); 
                     }
                 }
             }
             else
             {
-                throw new Exception("The number of students should be greater than zero...");
+                throw new Exception("The number of students should be greater than zero..."); //throw statement
             }
         }
-        catch (FormatException)
+        catch (FormatException) //catch block - system in-built exception
         {
             Console.WriteLine("Invalid Input");
         }
-        catch (Exception e)
+        catch (Exception e) //catch block - custom exception
         {
             Console.WriteLine(e.Message);
         }
-        finally
+        finally //finally block
         {
             Console.WriteLine("Exception Handling is done and the code is successfully executed....");
         }
@@ -139,9 +140,9 @@ public class Student : Person
 
 public class Program
 {
-    public static void Main()
+    public static void Main() //main function
     {
-        Student s = new Student();
-        s.Student_Details();
+        Student s = new Student(); //object creation
+        s.Student_Details(); //method accessing via object
     }
 }
