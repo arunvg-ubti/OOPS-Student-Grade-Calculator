@@ -15,4 +15,7 @@
 - Inputs Name, Age, Marks from the user 
 - Displays Name, Age, Average and Grade of the student
 - Includes Error Handling Features such as try, throw, catch and finally blocks
+- Done input validation
+- Usage of Enum
+- Creation of object for processing of each student detail
 - The end
