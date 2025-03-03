@@ -6,7 +6,19 @@ public abstract class Person //base class
     public string Name { get; set; } //encapsulation
     public int Age { get; set; } //encapsulation
     public abstract float Calculate_Average(int[] marks); //abstraction
-    public abstract string Compute_Grades(float average); //abstraction
+    public abstract Grades Compute_Grades(float average); //abstraction
+
+    //Enum usage for storing grades
+    //Defining Enum 'Grades' in base class 'Person' and using it in derived class 'Student' - exhibits Inheritance
+    public enum Grades{ 
+        O,
+        A,
+        B,
+        C,
+        D,
+        E,
+        Fail
+    }
 }
 
 public class Student : Person //derived class
@@ -21,128 +33,171 @@ public class Student : Person //derived class
         return (float)sum / marks.Length;
     }
 
-    public override string Compute_Grades(float average) //method overriding - Polymorphism
+    public override Grades Compute_Grades(float average) //method overriding - Polymorphism
     {
+        //usage of Enum 'Grades'
         if (average >= 90 && average <= 100)
         {
-            return "The grade is 'O'";
+            return Grades.O;
         }
         else if (average >= 80 && average < 90)
         {
-            return "The grade is 'A'";
+            return Grades.A;
         }
         else if (average >= 70 && average < 80)
         {
-            return "The grade is 'B'";
+            return Grades.B;
         }
         else if (average >= 60 && average < 70)
         {
-            return "The grade is 'C'";
+            return Grades.C;
         }
         else if (average >= 50 && average < 60)
         {
-            return "The grade is 'D'";
+            return Grades.D;
         }
         else if (average >= 40 && average < 50)
         {
-            return "The grade is 'E'";
+            return Grades.E;
         }
         else
         {
-            return "Fail";
+            return Grades.Fail;
         }
     }
 
-    public void Student_Details() //get and post student details
+    public void Student_Details() //get student details, do computation and display the results
     {
-        try
+        while(true) //while loop
         {
-            Console.WriteLine("Enter the number of students whose grades you want to calculate: ");
-            string student_number = Console.ReadLine()!;
-            int students = int.Parse(student_number); //Converting datatype
-            if (students > 0)
+            try //try block
             {
-                for (int i = 0; i < students; i++)
+                Console.WriteLine("\nEnter the number of students whose grades you want to calculate: ");
+                string student_number = Console.ReadLine()!;
+
+                if(string.IsNullOrEmpty(student_number)) //input validation
                 {
-                    try //try block
+                    throw new Exception("\nNumber of students can't be null! Please provide a valid input!");
+                    continue;
+                }
+
+                int students = int.Parse(student_number); //Converting datatype
+
+                if(students<0) //input validation
+                {
+                    throw new Exception("\nNumber of students can't be negative! Please provide a valid input!");
+                    continue;
+                }
+
+                if (students > 0)
+                {
+                    for (int i = 0; i < students; i++) //for loop
                     {
-                        Console.WriteLine($"Enter the name of student {i + 1}: ");
-                        Name = Console.ReadLine()!;
-
-                        Console.WriteLine($"Enter the age of student {i + 1}: ");
-                        Age = int.Parse(Console.ReadLine()!);
-
-                        if (Age < 0)
+                        try //try block
                         {
-                            throw new Exception("Age can't be negative"); //throw statement
-                        }
+                            Student student= new Student(); //Creating a student instance (object) for each student
 
-                        Console.WriteLine($"How many marks do you want to enter for Student {i + 1}? ");
-                        string number = Console.ReadLine()!;
-                        int x = int.Parse(number);
+                            Console.WriteLine($"\n\nEnter the name of student {i + 1}: ");
+                            student.Name = Console.ReadLine()!; //Name of student assigned
 
-                        if (x <= 0)
-                        {
-                            throw new Exception("The number of marks to be entered should be greater than zero..."); //throw statement
-                        }
-
-                        int[] marks = new int[x];
-
-                        for (int j = 0; j < x; j++)
-                        {
-                            try //try block
+                            if(student.Name==null) //input validation
                             {
-                                Console.WriteLine($"\nFor Student {i + 1}, enter the marks as follows\n");
-                                Console.WriteLine($"Enter Mark {j + 1}: ");
-                                marks[j] = int.Parse(Console.ReadLine()!);
+                                throw new Exception("\nStudent Name can't be null! Kindly provide a valid input!"); //throw
+                                continue;
+                            }
 
-                                if (marks[j] < 0)
+                            Console.WriteLine($"\n\nEnter the age of student {i + 1}: ");
+                            student.Age = int.Parse(Console.ReadLine()!); //Age of student assigned
+
+                            if (student.Age <= 3 || student.Age >100) //input validation
+                            {
+                                throw new Exception("\nStudent Age should be between 4 and 100! Kindly give a valid input!"); //throw statement
+                                continue;
+                            }
+
+                            if(student.Age==null) //input validation
+                            {
+                                throw new Exception("\nStudent Age can't be null! Kindly provide a valid input!"); //throw
+                                continue;
+                            }
+
+                            Console.WriteLine($"\n\nHow many marks do you want to enter for Student {i + 1}? ");
+                            string number = Console.ReadLine()!;
+
+                            if(string.IsNullOrEmpty(number)) //input validation
+                            {
+                                throw new Exception("\nNumber of marks can't be null! Kindly provide a valid input!"); //throw
+                                continue;
+                            }
+
+                            int x = int.Parse(number); //Parsing - datatype conversion from string to int
+
+                            if(x<1)
+                            {
+                                throw new Exception("\nNumber of marks can't be less than 1! Kindly provide a valid input!");
+                                continue;
+                            }
+
+                            int[] marks = new int[x];
+
+                            for (int j = 0; j < x; j++) //nested for loop
+                            {
+                                try //try block
                                 {
-                                    throw new Exception("Marks can't be negative"); //throw statement
+                                    Console.WriteLine($"\n\nFor Student {i + 1}, enter the marks as follows\n");
+                                    Console.WriteLine($"\nEnter Mark {j + 1}: ");
+                                    marks[j] = int.Parse(Console.ReadLine()!);
+
+                                    if (marks[j] < 0 || marks[j]==null) //input validation
+                                    {
+                                        throw new Exception("\nMarks can't be negative or null! Kindly provide a proper input!"); //throw statement
+                                        continue;
+                                    }
+
+                                    if(marks[j]>100) //input validation
+                                    {
+                                        throw new Exception("\nMaximum Marks is 100! Kindly enter a valid input!"); //throw
+                                        continue;
+                                    }
+                                }
+                                catch (Exception e) //catch block
+                                {
+                                    Console.WriteLine(e.Message);
+                                    continue; //continue
                                 }
                             }
-                            catch (Exception e) //catch block
-                            {
-                                Console.WriteLine(e.Message); 
-                            }
+
+                            float average = student.Calculate_Average(marks); //Average mark of student assigned via student method
+                            Grades grade = student.Compute_Grades(average); //Grade of student assigned via student method
+
+                            Console.WriteLine($"\n\nStudent Name: {student.Name}\nAge: {student.Age}\nAverage Mark: {average:F2}\nGrade: {grade}\n");
                         }
-
-                        float average = Calculate_Average(marks);
-                        string grade = Compute_Grades(average);
-
-                        Console.WriteLine($"Name of the Student: {Name}\nAge: {Age}\nAverage Mark: {average:F2}\nGrade: {grade}\n");
-                    }
-                    catch (Exception e) //catch block
-                    {
-                        Console.WriteLine(e.Message); 
+                        catch (Exception e) //catch block
+                        {
+                            Console.WriteLine(e.Message);
+                            continue; //continue
+                        }
                     }
                 }
             }
-            else
+            catch (Exception e) //catch block - custom exception
             {
-                throw new Exception("The number of students should be greater than zero..."); //throw statement
+                Console.WriteLine(e.Message);
+                continue; //continue
             }
-        }
-        catch (FormatException) //catch block - system in-built exception
-        {
-            Console.WriteLine("Invalid Input");
-        }
-        catch (Exception e) //catch block - custom exception
-        {
-            Console.WriteLine(e.Message);
-        }
-        finally //finally block
-        {
-            Console.WriteLine("Exception Handling is done and the code is successfully executed....");
+            finally //finally block
+            {
+                Console.WriteLine("\n\n\nThe program is over! Thank you!");
+            }
+            break; //break statement - breaks the loop
         }
     }
 }
-
 public class Program
 {
     public static void Main() //main function
     {
         Student s = new Student(); //object creation
-        s.Student_Details(); //method accessing via object
+        s.Student_Details(); //Calling method of student class via student class instance/object
     }
 }
